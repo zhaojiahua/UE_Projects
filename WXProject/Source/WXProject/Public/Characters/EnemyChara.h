@@ -15,4 +15,6 @@ class WXPROJECT_API AEnemyChara : public AGASBaseChara
 	GENERATED_BODY()
 public:
 	AEnemyChara();
+protected:
+	void BeginPlay();
 };

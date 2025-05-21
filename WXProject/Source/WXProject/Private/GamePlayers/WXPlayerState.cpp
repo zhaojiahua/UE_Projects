@@ -12,6 +12,9 @@ AWXPlayerState::AWXPlayerState()
 	abilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("abilitySystemComponent");
 	abilitySystemComponent->SetIsReplicated(true);
 	attributeSet = CreateDefaultSubobject<UAttributeSet>("attributeSet");
+
+	//设置属性同步模式
+	abilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 }
 UAbilitySystemComponent* AWXPlayerState::GetAbilitySystemComponent() const
 {
