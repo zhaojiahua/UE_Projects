@@ -25,9 +25,13 @@ void AWXEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 	if (IAbilitySystemInterface* ascInterface = Cast<IAbilitySystemInterface>(OtherActor)){
 		const UWXAttributeSet* wxattributeSet = Cast<UWXAttributeSet>(ascInterface->GetAbilitySystemComponent()->GetAttributeSet(UWXAttributeSet::StaticClass()));
 		//下面是用于测试后面要改过来
-		UWXAttributeSet* testAttributeSet = const_cast<UWXAttributeSet*>(wxattributeSet);
-		testAttributeSet->SetHP(wxattributeSet->GetHP() + 25.0f);
-		Destroy();
+		if (wxattributeSet) {
+			UWXAttributeSet* testAttributeSet = const_cast<UWXAttributeSet*>(wxattributeSet);
+			testAttributeSet->SetHP(wxattributeSet->GetHP() + 25.0f);
+			UE_LOG(LogTemp, Warning, TEXT("-------->>>>>>>OnOverlap HP: %f"), wxattributeSet->GetHP());
+			Destroy();
+		}
+		else { UE_LOG(LogTemp, Warning, TEXT("-------->>>>>>wxattributeSet is nullptr")); }
 	}
 }
 

@@ -6,6 +6,7 @@
 #include "GameFramework/PlayerState.h"
 #include "GameplayAbilities/Public/AbilitySystemInterface.h"
 #include "GameplayAbilities/Public/AttributeSet.h"
+#include "AbilitySystems/WXAttributeSet.h"
 #include "WXPlayerState.generated.h"
 
 UCLASS()
@@ -17,10 +18,10 @@ public:
 	AWXPlayerState();
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	UAttributeSet* GetAttributeSet() const { return attributeSet; }
+	UAttributeSet* GetAttributeSet() const { return wxattributeSet; }
 protected:
 	UPROPERTY()
 	TObjectPtr<UAbilitySystemComponent> abilitySystemComponent;
 	UPROPERTY()
-	TObjectPtr<UAttributeSet> attributeSet;
+	TObjectPtr<UAttributeSet> wxattributeSet;
 };

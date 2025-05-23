@@ -8,10 +8,14 @@
 
 UWXAttributeSet::UWXAttributeSet()
 {
-	InitHP(100.0f);
-	InitMP(100.0f);
-	InitMaxHP(100.f);
-	InitMaxMP(100.f);
+	//InitHP(100.0f);
+	//InitMP(100.0f);
+	//InitMaxHP(100.f);
+	//InitMaxMP(100.f);
+	HP = 100.f;
+	MaxHP = 100.f;
+	MP = 100.f;
+	MaxMP = 100.f; 
 }
 
 void UWXAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
