@@ -4,6 +4,7 @@
 #include "Characters/ZhuJueChara.h"
 #include "GamePlayers/WXPlayerState.h"
 #include "GameplayAbilities/Public/AbilitySystemComponent.h"
+#include "UI/WXHUD.h"
 void AZhuJueChara::PossessedBy(AController* newController)
 {
 	Super::PossessedBy(newController);
@@ -23,4 +24,10 @@ void AZhuJueChara::InitAbilityActorInfo()
 	abilitySystemComponent->InitAbilityActorInfo(wxPalyerState, this);
 	attributeSet = wxPalyerState->GetAttributeSet();//同样主角持有的attributeSet也是PlayerState的的
 
+	//顺便把HUD里的四大元素给初始化了
+	if (APlayerController* playerController = GetController<APlayerController>()) {
+		if (AWXHUD* wxHUD = playerController->GetHUD<AWXHUD>()) {
+			wxHUD->InitOverlayHUD(playerController, wxPalyerState, abilitySystemComponent, attributeSet);
+		}
+	}
 }

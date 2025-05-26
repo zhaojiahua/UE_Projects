@@ -3,3 +3,8 @@
 
 #include "UI/WXUserWidget.h"
 
+void UWXUserWidget::SetWidgetController(UObject* inwc)
+{
+	widgetController = inwc;
+	WidgetControllerSet();
+}
