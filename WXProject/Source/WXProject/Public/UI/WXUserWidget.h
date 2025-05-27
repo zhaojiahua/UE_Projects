@@ -19,7 +19,7 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	TObjectPtr<UObject>widgetController;
 
-protected:
-	UFUNCTION(BlueprintImplementableEvent)
+
+	UFUNCTION(BlueprintNativeEvent)
 	void WidgetControllerSet();//获取widgetController之后根据其数据在蓝图中实现widget界面的变化
 };

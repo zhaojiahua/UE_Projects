@@ -29,6 +29,7 @@ void AWXHUD::InitOverlayHUD(APlayerController* inpc, APlayerState* inps, UAbilit
 	const FWidgetContrllerParam wcParams(inpc, inps, inasc, inas);
 	UWXWidgetController* widgetCtrl = GetOverlayWidgetController(wcParams);
 	overlayWidget->SetWidgetController(widgetCtrl);
+	widgetCtrl->BroadcastInitValue();//广播初始值(一定要设置好WidgetController之后再广播)
 
 	widget->AddToViewport();
 }

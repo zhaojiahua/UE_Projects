@@ -8,3 +8,8 @@ void UWXUserWidget::SetWidgetController(UObject* inwc)
 	widgetController = inwc;
 	WidgetControllerSet();
 }
+
+void UWXUserWidget::WidgetControllerSet_Implementation()
+{
+
+}

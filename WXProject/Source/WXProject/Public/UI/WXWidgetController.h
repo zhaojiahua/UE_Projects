@@ -4,7 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
+#include "Delegates/Delegate.h"
 #include "WXWidgetController.generated.h"
+
+//动态多播委托
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHpChangeSignature, float, newHP);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHpChangeSignature, float, newMaxHP);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMpChangeSignature, float, newMP);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxMpChangeSignature, float, newMaxMP);
 
 class UAbilitySystemComponent;
 class UAttributeSet;
@@ -27,13 +34,24 @@ struct FWidgetContrllerParam
 
 };
 
-UCLASS()
+UCLASS(BlueprintType,Blueprintable)
 class WXPROJECT_API UWXWidgetController : public UObject
 {
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetCtrlParams(const FWidgetContrllerParam& wcParams);
+	//广播初始值
+	void BroadcastInitValue();
+	UPROPERTY(BlueprintAssignable, Category = "GAS_Attributes")
+	FOnHpChangeSignature OnHpChangeSignature;
+	UPROPERTY(BlueprintAssignable, Category = "GAS_Attributes")
+	FOnMaxHpChangeSignature OnMaxHpChangeSignature;
+	UPROPERTY(BlueprintAssignable, Category = "GAS_Attributes")
+	FOnMpChangeSignature OnMpChangeSignature;
+	UPROPERTY(BlueprintAssignable, Category = "GAS_Attributes")
+	FOnMaxMpChangeSignature OnMaxMpChangeSignature;
+
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<APlayerController> mPlayerController= nullptr;
@@ -43,4 +61,5 @@ protected:
 	TObjectPtr<UAbilitySystemComponent> mAbilitySystemComponent = nullptr;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAttributeSet> mAttitudeSet = nullptr;
+
 };
