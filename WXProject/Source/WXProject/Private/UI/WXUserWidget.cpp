@@ -10,6 +10,4 @@ void UWXUserWidget::SetWidgetController(UObject* inwc)
 }
 
 void UWXUserWidget::WidgetControllerSet_Implementation()
-{
-
-}
+{}

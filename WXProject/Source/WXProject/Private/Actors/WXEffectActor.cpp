@@ -27,8 +27,9 @@ void AWXEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor*
 		//下面是用于测试后面要改过来
 		if (wxattributeSet) {
 			UWXAttributeSet* testAttributeSet = const_cast<UWXAttributeSet*>(wxattributeSet);
-			testAttributeSet->SetHP(wxattributeSet->GetHP() + 25.0f);
-			UE_LOG(LogTemp, Warning, TEXT("-------->>>>>>>OnOverlap HP: %f"), wxattributeSet->GetHP());
+			testAttributeSet->SetHP(wxattributeSet->GetHP() +HPVariation);
+			testAttributeSet->SetMP(wxattributeSet->GetMP() +MPVariation);
+			//UE_LOG(LogTemp, Warning, TEXT("-------->>>>>>>OnOverlap HP: %f"), wxattributeSet->GetHP());
 			Destroy();
 		}
 		else { UE_LOG(LogTemp, Warning, TEXT("-------->>>>>>wxattributeSet is nullptr")); }

@@ -22,19 +22,19 @@ public:
 	UWXAttributeSet();
 	//用于属性值的网络同步,定义哪些属性需要被复制
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_HP,category="VitalAttribute")
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_HP,category="VitalAttribute")
 	FGameplayAttributeData HP;//实时血量
 	ATTRIBUTE_ACCESSORS(UWXAttributeSet, HP);
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxHP, category = "VitalAttribute")
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_MaxHP, category = "VitalAttribute")
 	FGameplayAttributeData MaxHP;//最大血量
 	ATTRIBUTE_ACCESSORS(UWXAttributeSet, MaxHP);
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MP, category = "VitalAttribute")
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_MP, category = "VitalAttribute")
 	FGameplayAttributeData MP;//实时蓝量
 	ATTRIBUTE_ACCESSORS(UWXAttributeSet, MP);
 
-	UPROPERTY(BlueprintReadOnly, ReplicatedUsing = OnRep_MaxMP, category = "VitalAttribute")
+	UPROPERTY(BlueprintReadWrite, ReplicatedUsing = OnRep_MaxMP, category = "VitalAttribute")
 	FGameplayAttributeData MaxMP;//最大蓝量
 	ATTRIBUTE_ACCESSORS(UWXAttributeSet, MaxMP);
 

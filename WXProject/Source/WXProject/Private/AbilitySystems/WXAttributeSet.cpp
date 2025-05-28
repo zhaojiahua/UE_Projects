@@ -12,7 +12,7 @@ UWXAttributeSet::UWXAttributeSet()
 	//InitMP(100.0f);
 	//InitMaxHP(100.f);
 	//InitMaxMP(100.f);
-	HP = 100.f;
+	HP = 50.f;
 	MaxHP = 100.f;
 	MP = 100.f;
 	MaxMP = 100.f; 

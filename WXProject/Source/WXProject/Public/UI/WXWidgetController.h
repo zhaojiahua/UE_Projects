@@ -16,6 +16,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxMpChangeSignature, float, newM
 class UAbilitySystemComponent;
 class UAttributeSet;
 class AAplayerState;
+struct FOnAttributeChangeData;
 USTRUCT(BlueprintType)
 struct FWidgetContrllerParam
 {
@@ -51,6 +52,13 @@ public:
 	FOnMpChangeSignature OnMpChangeSignature;
 	UPROPERTY(BlueprintAssignable, Category = "GAS_Attributes")
 	FOnMaxMpChangeSignature OnMaxMpChangeSignature;
+
+	//绑定广播回调函数(AttributeSet数据变化会通知到WidgetController,然后WidgetController再广播出去)
+	void BindCallbackToDependencies();
+	void HPChange(const FOnAttributeChangeData& changeData)const;
+	void MaxHPChange(const FOnAttributeChangeData& changeData)const;
+	void MPChange(const FOnAttributeChangeData& changeData)const;
+	void MaxMPChange(const FOnAttributeChangeData& changeData)const;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

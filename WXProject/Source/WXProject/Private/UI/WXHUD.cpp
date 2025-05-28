@@ -11,8 +11,8 @@ UWXWidgetController* AWXHUD::GetOverlayWidgetController(const FWidgetContrllerPa
 	if (overlayWidgetController == nullptr) {
 		overlayWidgetController = NewObject<UWXWidgetController>(this, overlayWidgetControllerClass);
 		overlayWidgetController->SetWidgetCtrlParams(wctrlParams);
-		//这里是一个回调广播
-
+		//获取到WidgetController的时候就立刻把广播函数绑定好
+		overlayWidgetController->BindCallbackToDependencies();
 	}
 	return overlayWidgetController;
 }
