@@ -1,0 +1,16 @@
+LOL3D
+WXProject/Binaries
+WXProject/DerivedDataCache
+WXProject/Intermediate
+WXProject/Saved
+WXProject/Build
+WXProject/.vs
+
+*.vc.db
+*.opensdf
+*.opendb
+*.sdf
+*.sln
+*.suo
+*.xcodeproj
+*.xcworkspace
