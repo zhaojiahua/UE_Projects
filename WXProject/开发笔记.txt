@@ -29,3 +29,4 @@ Actor层级关系: 角色->碰撞体->Mesh->Root -2025-3-28-20:59
 主角会根据自己所持的武器而配备不同的招式,赤手空拳的情况下主角技能1是一套格斗长拳(默认的,也可以配备其他招式),平A分为拳或者掌或者脚,分别有冲拳勾拳砸拳轮拳,正蹬踹高边腿侧踹等 -2025-5-17-9:21
 蓝图生成的类:类名_C是Unreal引擎在运行时自动生成的蓝图对应的C++类,表示蓝图在内存中的具体实现和实例化,不带_C的是代表蓝图资源,即.uasset文件,它本身不是一个可直接实例化的类,是用来存储蓝图和配置用的 -2025-5-26-10:17
 Ctrl+B是编译的快捷键(VisualStudio2022) -2025-5-28-11:09
+ApplyGameplayEffectSpecToSelf和ApplyGameplayEffectToSelf的区别:总之ApplyGameplayEffectSpecToSelf可以动态调整效果(如强度持续时间等),更灵活,而ApplyGameplayEffectToSelf适应于快速应用预定义的GameplayEffect -2025-6-2-20:07
