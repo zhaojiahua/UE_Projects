@@ -8,6 +8,7 @@
 
 class USphereComponent;
 class UStaticMeshComponent;
+class UGameplayEffect;
 UCLASS()
 class WXPROJECT_API AWXEffectActor : public AActor
 {
@@ -27,7 +28,11 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UFUNCTION(BlueprintCallable)
+	void ApplyEffectToTarget(AActor* targetActor, TSubclassOf<UGameplayEffect> gameplayEffectClass);
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "ApplyEffect")
+	TSubclassOf<UGameplayEffect> gameplayEffectInstance;
 private:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USphereComponent> sphereCollision;
