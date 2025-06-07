@@ -4,11 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerState.h"
-#include "GameplayAbilities/Public/AbilitySystemInterface.h"
-#include "GameplayAbilities/Public/AttributeSet.h"
+#include <AbilitySystemInterface.h>
+#include <AttributeSet.h>
 #include "AbilitySystems/WXAttributeSet.h"
 #include "WXPlayerState.generated.h"
 
+class UWXAbilitySystemComponent;
 UCLASS()
 class WXPROJECT_API AWXPlayerState : public APlayerState, public IAbilitySystemInterface
 {

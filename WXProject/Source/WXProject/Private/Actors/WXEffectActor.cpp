@@ -3,9 +3,9 @@
 #include "Actors/WXEffectActor.h"
 #include "AbilitySystems/WXAttributeSet.h"
 #include "Components/SphereComponent.h"
-#include "GameplayAbilities/Public/AbilitySystemInterface.h"
-#include "GameplayAbilities/Public/AbilitySystemComponent.h"
-#include "GameplayAbilities/Public/GameplayEffect.h"
+#include <AbilitySystemInterface.h>
+#include <AbilitySystemComponent.h>
+#include <GameplayEffect.h>
 #include <AbilitySystemBlueprintLibrary.h>
 
 
@@ -21,27 +21,47 @@ AWXEffectActor::AWXEffectActor()
 	sphereCollision->SetupAttachment(mesh);
 }
 
-void AWXEffectActor::OnOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+void AWXEffectActor::OnOverlap(AActor* targetActor)
 {
-	//if (IAbilitySystemInterface* ascInterface = Cast<IAbilitySystemInterface>(OtherActor)){
-	//	const UWXAttributeSet* wxattributeSet = Cast<UWXAttributeSet>(ascInterface->GetAbilitySystemComponent()->GetAttributeSet(UWXAttributeSet::StaticClass()));
-	//	//下面是用于测试后面要改过来
-	//	if (wxattributeSet) {
-	//		UWXAttributeSet* testAttributeSet = const_cast<UWXAttributeSet*>(wxattributeSet);
-	//		testAttributeSet->SetHP(wxattributeSet->GetHP() +HPVariation);
-	//		testAttributeSet->SetMP(wxattributeSet->GetMP() +MPVariation);
-	//		//UE_LOG(LogTemp, Warning, TEXT("-------->>>>>>>OnOverlap HP: %f"), wxattributeSet->GetHP());
-	//		Destroy();
-	//	}
-	//	else { UE_LOG(LogTemp, Warning, TEXT("-------->>>>>>wxattributeSet is nullptr")); }
-	//}
+	if (instantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
+		ApplyEffectToTarget(targetActor, instantEffectClass);
+	}
+	if (durationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
+		ApplyEffectToTarget(targetActor, durationEffectClass);
+	}
+	if (infiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnOverlap) {
+		ApplyEffectToTarget(targetActor, infiniteEffectClass);
+	}
+}
+void AWXEffectActor::OnEndOverlap(AActor* targetActor)
+{
+	if (instantEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
+		ApplyEffectToTarget(targetActor, instantEffectClass);
+	}
+	if (durationEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
+		ApplyEffectToTarget(targetActor, durationEffectClass);
+	}
+	if (infiniteEffectApplicationPolicy == EEffectApplicationPolicy::ApplyOnEndOverlap) {
+		ApplyEffectToTarget(targetActor, infiniteEffectClass);
+	}
+	UAbilitySystemComponent* targetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(targetActor);
+	if (!IsValid(targetASC))return;
+	TArray<FActiveGameplayEffectHandle> handlesToRemove;
+	for (auto handlePair : activeEffectHandles) {
+		if (handlePair.Value == targetASC) {
+			targetASC->RemoveActiveGameplayEffect(handlePair.Key);
+			handlesToRemove.Add(handlePair.Key);
+		}
+	}
+	for (auto handle : handlesToRemove) {
+		activeEffectHandles.FindAndRemoveChecked(handle);
+	}
 }
 
 // Called when the game starts or when spawned
 void AWXEffectActor::BeginPlay()
 {
 	Super::BeginPlay();
-	sphereCollision->OnComponentBeginOverlap.AddDynamic(this, &AWXEffectActor::OnOverlap);
 }
 
 void AWXEffectActor::ApplyEffectToTarget(AActor* targetActor, TSubclassOf<UGameplayEffect> gameplayEffectClass)
@@ -51,8 +71,12 @@ void AWXEffectActor::ApplyEffectToTarget(AActor* targetActor, TSubclassOf<UGamep
 	check(gameplayEffectClass);
 	FGameplayEffectContextHandle effectContextHandle = targetASC->MakeEffectContext();
 	effectContextHandle.AddSourceObject(this);
-	const FGameplayEffectSpecHandle effectSpecHandle = targetASC->MakeOutgoingSpec(gameplayEffectClass, 1.f, effectContextHandle);
-	targetASC->ApplyGameplayEffectSpecToSelf(*effectSpecHandle.Data.Get());
+	const FGameplayEffectSpecHandle effectSpecHandle = targetASC->MakeOutgoingSpec(gameplayEffectClass, effectLevel, effectContextHandle);
+	FActiveGameplayEffectHandle activeEffectHandle=targetASC->ApplyGameplayEffectSpecToSelf(*effectSpecHandle.Data.Get());
+	if (effectSpecHandle.Data.Get()->Def.Get()->DurationPolicy == EGameplayEffectDurationType::Infinite) {
+		if (infiniteEffectRemovalPolicy == EEffectRemovalPolicy::RemoveOnEndOverlap)
+		{activeEffectHandles.Add(activeEffectHandle, targetASC);}
+	}
 }
 
 

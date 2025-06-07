@@ -21,3 +21,7 @@ UAbilitySystemComponent* AGASBaseChara::GetAbilitySystemComponent() const
 {
 	return abilitySystemComponent;
 }
+void AGASBaseChara::InitAbilityActorInfo()
+{
+
+}

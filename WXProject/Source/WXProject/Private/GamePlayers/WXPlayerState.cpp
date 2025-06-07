@@ -3,13 +3,13 @@
 
 #include "GamePlayers/WXPlayerState.h"
 #include "GameFramework/Actor.h"
-#include "GameplayAbilities/Public/AbilitySystemComponent.h"
+#include "AbilitySystems/WXAbilitySystemComponent.h"
 
 AWXPlayerState::AWXPlayerState()
 {
 	NetUpdateFrequency = 100;
 
-	abilitySystemComponent = CreateDefaultSubobject<UAbilitySystemComponent>("abilitySystemComponent");
+	abilitySystemComponent = CreateDefaultSubobject<UWXAbilitySystemComponent>("abilitySystemComponent");
 	abilitySystemComponent->SetIsReplicated(true);
 	wxattributeSet = CreateDefaultSubobject<UWXAttributeSet>("wxattributeSet");
 

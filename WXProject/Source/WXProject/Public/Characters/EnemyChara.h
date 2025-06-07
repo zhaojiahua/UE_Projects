@@ -6,9 +6,7 @@
 #include "Characters/GASBaseChara.h"
 #include "EnemyChara.generated.h"
 
-/**
- * 
- */
+
 UCLASS()
 class WXPROJECT_API AEnemyChara : public AGASBaseChara
 {
@@ -17,4 +15,6 @@ public:
 	AEnemyChara();
 protected:
 	void BeginPlay();
+
+	virtual void InitAbilityActorInfo() override;
 };

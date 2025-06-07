@@ -3,7 +3,8 @@
 
 #include "Characters/ZhuJueChara.h"
 #include "GamePlayers/WXPlayerState.h"
-#include "GameplayAbilities/Public/AbilitySystemComponent.h"
+#include "AbilitySystems/WXAbilitySystemComponent.h"
+#include <AbilitySystemComponent.h>
 #include "UI/WXHUD.h"
 void AZhuJueChara::PossessedBy(AController* newController)
 {
@@ -22,6 +23,7 @@ void AZhuJueChara::InitAbilityActorInfo()
 	check(wxPalyerState);
 	abilitySystemComponent = wxPalyerState->GetAbilitySystemComponent();//主角的AbilitySystemComponent是持有PlayerState的的;
 	abilitySystemComponent->InitAbilityActorInfo(wxPalyerState, this);
+	Cast<UWXAbilitySystemComponent>(abilitySystemComponent)->AbilityActorInfoSet();//顺便设置一下ASC的Effect广播函数
 	attributeSet = wxPalyerState->GetAttributeSet();//同样主角持有的attributeSet也是PlayerState的的
 
 	//顺便把HUD里的四大元素给初始化了

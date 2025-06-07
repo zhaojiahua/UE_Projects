@@ -2,16 +2,13 @@
 
 
 #include "AbilitySystems/WXAttributeSet.h"
+#include "GameFramework/Character.h"
 #include "UObject/CoreNet.h"
 #include "Net/UnrealNetwork.h"
-
+#include <AbilitySystemBlueprintLibrary.h>
 
 UWXAttributeSet::UWXAttributeSet()
 {
-	//InitHP(100.0f);
-	//InitMP(100.0f);
-	//InitMaxHP(100.f);
-	//InitMaxMP(100.f);
 	HP = 50.f;
 	MaxHP = 100.f;
 	MP = 50.f;
@@ -46,4 +43,44 @@ void UWXAttributeSet::OnRep_MaxHP(const FGameplayAttributeData oldMaxHP) const
 void UWXAttributeSet::OnRep_MaxMP(const FGameplayAttributeData oldMaxMP) const
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UWXAttributeSet, MaxMP, oldMaxMP);
+}
+void UWXAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
+{
+	Super::PreAttributeChange(Attribute, NewValue);
+	if (Attribute == GetHPAttribute()) {
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHP());
+	}
+	if (Attribute == GetMPAttribute()) {
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMP());
+	}
+}
+void UWXAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+	FEffectProperties props;
+	SetEffectProperties(Data, props);
+}
+
+void UWXAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& data, FEffectProperties props)
+{
+	props.effectContextHandle = data.EffectSpec.GetContext();
+	//ÉèÖÃsource
+	props.sourceASC = props.effectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
+	if (IsValid(props.sourceASC) && props.sourceASC->AbilityActorInfo.IsValid() && props.sourceASC->AbilityActorInfo->AvatarActor.IsValid()) {
+		props.sourceAvatarActor = props.sourceASC->AbilityActorInfo->AvatarActor.Get();
+		props.sourceController = props.sourceASC->AbilityActorInfo->PlayerController.Get();
+		if (props.sourceController == nullptr && props.sourceAvatarActor != nullptr) {
+			if (const APawn* pawn = Cast<APawn>(props.sourceAvatarActor))
+				props.sourceController = pawn->GetController();
+		}
+		if (props.sourceController)
+			props.sourceCharacter = Cast<ACharacter>(props.sourceController->GetPawn());
+	}
+	//ÉèÖÃtarget
+	if (data.Target.AbilityActorInfo.IsValid() && data.Target.AbilityActorInfo->AvatarActor.IsValid()) {
+		props.targetAvatarActor = data.Target.AbilityActorInfo->AvatarActor.Get();
+		props.targetController = data.Target.AbilityActorInfo->PlayerController.Get();
+		props.targetCharacter = Cast<ACharacter>(props.targetAvatarActor);
+		props.targetASC = UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(props.targetAvatarActor);
+	}
 }

@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "GameplayAbilities/Public/AbilitySystemInterface.h"
-#include "GameplayAbilities/Public/AttributeSet.h"
+#include <AbilitySystemInterface.h>
+#include <AttributeSet.h>
+#include "AbilitySystems/WXAbilitySystemComponent.h"
 #include "GASBaseChara.generated.h"
 
 UCLASS(Abstract) //抽象类不能实例化,只能通过子类实例化
@@ -28,4 +29,6 @@ protected:
 	TObjectPtr<UAbilitySystemComponent> abilitySystemComponent;
 	UPROPERTY()
 	TObjectPtr<UAttributeSet> attributeSet;
+
+	virtual void InitAbilityActorInfo();
 };

@@ -3,8 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AttributeSet.h"
-#include "GameplayAbilities/Public/AbilitySystemComponent.h"
+#include <AttributeSet.h>
+#include <AbilitySystemComponent.h>
+#include <GameplayEffectExtension.h>
 #include "WXAttributeSet.generated.h"
 
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
@@ -12,6 +13,32 @@ GAMEPLAYATTRIBUTE_PROPERTY_GETTER(ClassName, PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+
+class ACharacter;
+USTRUCT()
+struct FEffectProperties //在GameplayEffect执行后存储所作用的信息包括Source和Target等
+{
+	GENERATED_BODY()
+	FEffectProperties() {};
+	
+	FGameplayEffectContextHandle effectContextHandle;
+	UPROPERTY()
+	UAbilitySystemComponent* sourceASC = nullptr;
+	UPROPERTY()
+	AActor* sourceAvatarActor = nullptr;
+	UPROPERTY()
+	AController* sourceController = nullptr;
+	UPROPERTY()
+	ACharacter* sourceCharacter = nullptr;
+	UPROPERTY()
+	UAbilitySystemComponent* targetASC = nullptr;
+	UPROPERTY()
+	AActor* targetAvatarActor = nullptr;
+	UPROPERTY()
+	AController* targetController = nullptr;
+	UPROPERTY()
+	ACharacter* targetCharacter = nullptr;
+};
 
 UCLASS()
 class WXPROJECT_API UWXAttributeSet : public UAttributeSet
@@ -47,4 +74,9 @@ public:
 	void OnRep_MaxHP(const FGameplayAttributeData oldMaxHP)const;
 	UFUNCTION()
 	void OnRep_MaxMP(const FGameplayAttributeData oldMaxMP)const;
+
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)override;
+private:
+	void SetEffectProperties(const FGameplayEffectModCallbackData& data, FEffectProperties props);
 };
